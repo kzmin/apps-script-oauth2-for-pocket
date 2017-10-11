@@ -23,19 +23,26 @@ var _ = Underscore.load();
 
 /**
  * The supported formats for the returned OAuth2 token.
- * @type {Object.<string, string>}
+ * @enum {string}
  */
 var TOKEN_FORMAT = {
+  /** JSON format, for example <code>{"access_token": "..."}</code> **/
   JSON: 'application/json',
+  /** Form URL-encoded, for example <code>access_token=...</code> **/
   FORM_URL_ENCODED: 'application/x-www-form-urlencoded'
 };
 
 /**
  * The supported locations for passing the state parameter.
- * @type {Object.<string, string>}
+ * @enum {string}
  */
 var STATE_PARAMETER_LOCATION = {
+  /**
+   * Pass the state parameter in the authorization URL.
+   * @default
+   */
   AUTHORIZATION_URL: 'authorization-url',
+  /** Pass the state token in the redirect URL, as a workaround for APIs that don't support the state parameter. */
   REDIRECT_URL: 'redirect-url'
 };
 

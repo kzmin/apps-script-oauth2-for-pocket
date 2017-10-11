@@ -79,7 +79,7 @@ Service_.prototype.setTokenFormat = function(tokenFormat) {
 /**
  * Sets the additional HTTP headers that should be sent when retrieving or
  * refreshing the access token.
- * @param Object.<string,string> tokenHeaders A map of header names to values.
+ * @param {Object.<string,string>} tokenHeaders A map of header names to values.
  * @return {Service_} This service, for chaining.
  */
 Service_.prototype.setTokenHeaders = function(tokenHeaders) {
@@ -88,8 +88,19 @@ Service_.prototype.setTokenHeaders = function(tokenHeaders) {
 };
 
 /**
+ * @callback tokenHandler
+ * @param tokenPayload {Object} A hash of parameters to be sent to the token URL.
+ * @param tokenPayload.code {string} The authorization code.
+ * @param tokenPayload.client_id {string} The client ID.
+ * @param tokenPayload.client_secret {string} The client secret.
+ * @param tokenPayload.redirect_uri {string} The redirect URI.
+ * @param tokenPayload.grant_type {string} The type of grant requested.
+ * @returns {Object} A modified hash of parameters to be sent to the token URL.
+ */
+
+/**
  * Sets an additional function to invoke on the payload of the access token request.
- * @param Object tokenHandler A function to invoke on the payload of the request for an access token.
+ * @param tokenHandler {tokenHandler} tokenHandler A function to invoke on the payload of the request for an access token.
  * @return {Service_} This service, for chaining.
  */
 Service_.prototype.setTokenPayloadHandler = function(tokenHandler) {
@@ -375,9 +386,9 @@ Service_.prototype.getLastError = function() {
 };
 
 /**
- * Gets the last error that occurred this execution when trying to automatically refresh
- * or generate an access token.
- * @return {Exception} An error, if any.
+ * Returns the redirect URI that will be used for this service. Often this URI
+ * needs to be entered into a configuration screen of your OAuth provider.
+ * @return {string} The redirect URI.
  */
 Service_.prototype.getRedirectUri = function() {
   return getRedirectUri(this.scriptId_);
@@ -553,6 +564,7 @@ Service_.prototype.isExpired_ = function(token) {
 /**
  * Uses the service account flow to exchange a signed JSON Web Token (JWT) for an
  * access token.
+ * @private
  */
 Service_.prototype.exchangeJwt_ = function() {
   validate_({
